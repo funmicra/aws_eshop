@@ -1,0 +1,60 @@
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude all .tfvars files, which might contain sensitive data
+*.tfvars
+*.tfvars.json
+
+# Ignore override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# SSH keys
+*.pem
+*.key
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup files
+*.backup
+*.bak
+
+# Ansible
+ansible/inventory/generated_hosts.ini
+**/__pycache__/
+**/*.pyc
+*.retry
+
+# Python
+*.pyc
+__pycache__/
+
+# Docker
+*.log
+docker-compose.override.yml
+docker-compose.*.yml
+**/wp_data/
+**/db_data/

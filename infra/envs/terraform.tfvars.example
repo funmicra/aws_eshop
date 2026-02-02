@@ -1,0 +1,23 @@
+# Copy this file to terraform.tfvars and customize the values
+
+aws_region  = "eu-central-1"
+environment = "production"
+project_name = "candle-shop"
+
+# Network Configuration
+vpc_cidr             = "192.168.33.0/24"
+availability_zones   = ["eu-central-1a", "eu-central-1b"]
+public_subnet_cidrs  = ["192.168.33.0/26", "192.168.33.64/26"]
+private_subnet_cidrs = ["192.168.33.128/26", "192.168.33.192/26"]
+
+# EC2 Configuration
+instance_type = "t3.micro"
+key_name      = "mini-saas-key"  # Make sure this key exists in your AWS account
+
+# Security Configuration
+# IMPORTANT: Change this to your specific IP address for better security!
+# Example: ["203.0.113.0/32"]
+allowed_ssh_cidr = ["0.0.0.0/0"]
+
+# Optional: ACM Certificate ARN for HTTPS
+# certificate_arn = "arn:aws:acm:eu-central-1:123456789012:certificate/xxxxx"

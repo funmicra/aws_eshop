@@ -1,0 +1,79 @@
+---
+- name: Deploy MariaDB on backend EC2 hosts
+  hosts: backend
+  become: true
+  vars:
+    db_container_name: wordpress_db
+    db_image: mariadb:10.11
+    db_name: wordpress
+    db_user: wpuser
+    db_password: strongpassword
+    db_root_password: strongrootpassword
+    db_network: wp_net
+  tasks:
+    - name: Ensure Docker SDK for Python is installed
+      ansible.builtin.pip:
+        name: docker
+        state: present
+
+    - name: Create Docker network
+      community.docker.docker_network:
+        name: "{{ db_network }}"
+        state: present
+
+    - name: Run MariaDB container
+      community.docker.docker_container:
+        name: "{{ db_container_name }}"
+        image: "{{ db_image }}"
+        restart_policy: always
+        networks:
+          - name: "{{ db_network }}"
+        env:
+          MYSQL_DATABASE: "{{ db_name }}"
+          MYSQL_USER: "{{ db_user }}"
+          MYSQL_PASSWORD: "{{ db_password }}"
+          MYSQL_ROOT_PASSWORD: "{{ db_root_password }}"
+        volumes:
+          - db_data:/var/lib/mysql
+        state: started
+
+- name: Deploy WordPress on frontend EC2 hosts
+  hosts: frontend
+  become: true
+  vars:
+    wp_container_name: wordpress
+    wp_image: wordpress:php8.2-apache
+    wp_port: 80
+    wp_db_host: "{{ hostvars['backend'][0].ansible_default_ipv4.address }}:3306"
+    db_name: wordpress
+    db_user: wpuser
+    db_password: strongpassword
+    db_network: wp_net
+  tasks:
+    - name: Ensure Docker SDK for Python is installed
+      ansible.builtin.pip:
+        name: docker
+        state: present
+
+    - name: Create Docker network
+      community.docker.docker_network:
+        name: "{{ db_network }}"
+        state: present
+
+    - name: Run WordPress container
+      community.docker.docker_container:
+        name: "{{ wp_container_name }}"
+        image: "{{ wp_image }}"
+        restart_policy: always
+        networks:
+          - name: "{{ db_network }}"
+        ports:
+          - "{{ wp_port }}:80"
+        env:
+          WORDPRESS_DB_HOST: "{{ wp_db_host }}"
+          WORDPRESS_DB_NAME: "{{ db_name }}"
+          WORDPRESS_DB_USER: "{{ db_user }}"
+          WORDPRESS_DB_PASSWORD: "{{ db_password }}"
+        volumes:
+          - wp_data:/var/www/html
+        state: started
