@@ -1,4 +1,4 @@
-# Candle-Shop Infrastructure - Terraform Configuration
+# e-shop Infrastructure - Terraform Configuration
 
 This Terraform configuration deploys a complete, secure, and production-ready infrastructure on AWS for the Candle-Shop application.
 
