@@ -11,9 +11,9 @@ pipeline {
         stage('Checkout Source') {
             steps {
                 git(
-                    branch: 'main',
-                    url: 'https://github.com/ORG_NAME/REPO_NAME.git',
-                    credentialsId: 'github-credentials'
+                    branch: 'master',
+                    url: 'https://github.com/funmicra/aws_eshop.git',
+                    credentialsId: 'GITHUB_CREDENTIALS'
                 )
             }
         }
